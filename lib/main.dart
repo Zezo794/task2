@@ -1,15 +1,16 @@
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:task2/shared/MainCubit/cubit.dart';
 import 'package:task2/shared/network/local/Cash_helper.dart';
+import 'package:task2/shared/network/local/Database_helper.dart';
 import 'package:task2/shared/network/remote/dio_helper.dart';
 
-import 'modules/home_scrren/home_screen.dart';
+import 'generated/l10n.dart';
+import 'modules/homeScreen/homeScreen.dart';
+
 
 
 
@@ -22,9 +23,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
 
-  DioHelper.init();
+  await DioHelper.init();
   await CashHelper.init();
-
+  await DBHelper.initDb();
   runApp( const MyApp( ));
 }
 
@@ -50,12 +51,21 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) {
-          return AppCubit();
+          return AppCubit()..getALLFavoritesTitles();
         }),
       ],
-      child:  const MaterialApp(
+      child:   GetMaterialApp(
+          key: const Key('ar'),
+          locale: const Locale('ar'),
+          localizationsDelegates:  const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
           debugShowCheckedModeBanner: false,
-          home:  PdfViewerPage()
+          home:  const HomeScreen()
       ),
     );
   }

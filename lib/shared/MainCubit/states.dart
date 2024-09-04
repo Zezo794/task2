@@ -8,11 +8,14 @@
  class ChangeSelectedItemSuccessState extends AppState{}
  class ChangeFullScreenSuccessState extends AppState{}
 
- class AppHighlightChangedState extends AppState{}
+ class GetALLFavoritesSuccessState extends AppState{}
 
+ class GetALLItemSuccessState extends AppState{}
 
+ class ChangeFavoritesUseSuccessStater extends AppState{}
 
-
+ class ChangeFavoritesDatabaseSuccessState extends AppState{}
+ class GetALLFavoritesTitlesSuccessState extends AppState{}
 
 
 
