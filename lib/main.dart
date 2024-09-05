@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:task2/shared/MainCubit/cubit.dart';
+import 'package:task2/shared/component/constans.dart';
 import 'package:task2/shared/network/local/Cash_helper.dart';
 import 'package:task2/shared/network/local/Database_helper.dart';
 import 'package:task2/shared/network/remote/dio_helper.dart';
@@ -22,10 +23,18 @@ final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   await DioHelper.init();
   await CashHelper.init();
   await DBHelper.initDb();
+  bool? first=  CashHelper.getbool(key: 'first');
+  if(first==null){
+    for (var title in titles) {
+      title.forEach((key, value) async {
+        await DBHelper.insert(key, value);
+      });
+    }
+  }
+  CashHelper.putbool(key: 'first', value: true);
   runApp( const MyApp( ));
 }
 
